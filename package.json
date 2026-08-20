@@ -1,0 +1,27 @@
+{
+  "name": "User-Service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "pnpm tsc && node --env-file=.env dist/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.6.0",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "dependencies": {
+    "fastify": "^5.12.0",
+    "firebase-admin": "^14.2.0",
+    "mysql2": "^3.23.3",
+    "sequelize": "^6.37.8",
+    "typescript": "^7.0.2"
+  }
+}

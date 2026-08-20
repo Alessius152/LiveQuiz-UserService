@@ -1,0 +1,7 @@
+.env
+db-queries
+dist
+node_modules
+firebase-private-credentials.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
