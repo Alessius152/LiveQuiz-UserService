@@ -3,11 +3,9 @@ import User from "../database/models/User.js"
 import { UserInsert } from "../models/db/auth.js"
 
 const getAccountByFirebaseUid = async (uid: string) => {
-    const record = await User.findOne({
+    return await User.findOne({
         where: { firebaseUid: uid }
     })
-
-    return record
 }
 
 const createUser = async ({ firebaseUid, username }: UserInsert) => {

@@ -4,12 +4,12 @@ import { HttpStatusCode } from "../../utils/enums/http-status-code.js"
 import { completeAuthSchema_Type } from "../../schemas/node/auth.js"
 
 const completeController: RouteHandlerMethod = async (request, reply) => {
-    const { firebaseUid } = request.user!
+    const fbAuth = request.fbProfile!
     const { username } = request.body as completeAuthSchema_Type['body']
 
     try {
 
-        const user = await getAccountByFirebaseUid(firebaseUid)
+        const user = await getAccountByFirebaseUid(fbAuth.uid)
 
         if (user) {
             reply.status(HttpStatusCode.CONFLICT).send({
@@ -19,7 +19,7 @@ const completeController: RouteHandlerMethod = async (request, reply) => {
             return
         }
 
-        const { createdAt } = await createUser({ firebaseUid, username })
+        const { createdAt } = await createUser({ firebaseUid: fbAuth.uid, username })
         reply.status(HttpStatusCode.OK).send({ username, createdAt })
         return
 

@@ -7,8 +7,16 @@ import User from './database/models/User.js'
 import './firebase/config.js'
 
 import { authRouter } from './routing/authentication.js'
+import { usersRouter } from './routing/users.js'
 
-const server: FastifyInstance = Fastify({})
+const server: FastifyInstance = Fastify({
+    ajv: {
+        customOptions: {
+            removeAdditional: false,
+            useDefaults: true
+        }
+    }
+})
 
 const startDB = async () => {
     try {
@@ -38,4 +46,5 @@ const start = async () => {
 }
 
 server.register(authRouter, { prefix: '/auth' })
+server.register(usersRouter, { prefix: '/users' })
 start()

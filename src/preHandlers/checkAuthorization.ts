@@ -16,7 +16,6 @@ const checkAuthorization: preHandlerAsyncHookHandler = async (request, reply) =>
     const token = parts[1]
     const other = parts[2]
 
-    console.log()
     if (
         (prefix !== 'Bearer') ||
         (!token) ||

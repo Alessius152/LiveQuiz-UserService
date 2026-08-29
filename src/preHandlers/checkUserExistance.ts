@@ -18,8 +18,8 @@ const checkUserExistance: preHandlerAsyncHookHandler = async (request, reply) =>
 
         request.user = {
             pk: user.id,
-            firebaseUid: uid,
-            username: user.username
+            username: user.username,
+            createdAt: user.createdAt
         }
 
         return
@@ -29,9 +29,6 @@ const checkUserExistance: preHandlerAsyncHookHandler = async (request, reply) =>
         reply.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send({})
         return
     }
-
-    return
-
 }
 
 export {
