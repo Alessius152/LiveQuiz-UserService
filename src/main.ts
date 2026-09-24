@@ -10,6 +10,7 @@ import { authRouter } from './routing/authentication.js'
 import { usersRouter } from './routing/users.js'
 
 const server: FastifyInstance = Fastify({
+    logger: true,
     ajv: {
         customOptions: {
             removeAdditional: false,
@@ -35,7 +36,7 @@ const startDB = async () => {
 const start = async () => {
     try {
         await startDB()
-        await server.listen({ port: Number(process.env.SERVER_PORT) })
+        await server.listen({ host: '0.0.0.0', port: Number(process.env.SERVER_PORT) })
 
         console.log("server started")
     }

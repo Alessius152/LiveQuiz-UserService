@@ -1,0 +1,71 @@
+
+name: livequiz_userservice_cluster
+
+services:
+
+    livequiz-userservice-database:
+        image: mysql:8.0
+        container_name: livequiz-userservice-database
+        environment:
+            MYSQL_ROOT_PASSWORD: "a1190password"
+            MYSQL_DATABASE: "livequiz_userservice_db"
+        networks: 
+            - user-service-net
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pa1190password"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+    livequiz-userservice-backend-1:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: livequiz_userservice_backend
+        container_name: livequiz-userservice-backend-1
+        environment:
+            - SERVER_PORT=3000
+            - DB_HOST=livequiz-userservice-database
+            - DB_USER=root
+            - DB_PASW=a1190password
+            - DB_NAME=livequiz_userservice_db
+        depends_on:
+            livequiz-userservice-database:
+                condition: service_healthy
+        networks:
+            - user-service-net
+
+    livequiz-userservice-backend-2:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: livequiz_userservice_backend
+        container_name: livequiz-userservice-backend-2
+        environment:
+            - SERVER_PORT=3000
+            - DB_HOST=livequiz-userservice-database
+            - DB_USER=root
+            - DB_PASW=a1190password
+            - DB_NAME=livequiz_userservice_db
+        depends_on:
+            livequiz-userservice-database:
+                condition: service_healthy
+        networks:
+            - user-service-net
+
+    livequiz-userservice-loadbalancer:
+        image: nginx:alpine
+        container_name: livequiz-userservice-loadbalancer
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - livequiz-userservice-backend-1
+            - livequiz-userservice-backend-2
+        networks:
+            - user-service-net
+
+networks:
+    user-service-net:
+        driver: bridge
